@@ -1,0 +1,23 @@
+{
+"apps" : [{
+	  
+	    "name"        : "aix-client",
+	    "script"      : "./service",   
+	    "exec_interpreter": "bash",
+	    "cwd"         : "./aixjobclient",
+	    "error_file" :  "/home/dotnet/logs/aix-client/console-error.log",
+	    "out_file"   :  "/home/dotnet//logs/aix-client/console.log",
+	    "max_memory_restart": "500M"	   
+    },
+    {
+	  
+	    "name"        : "aix-server",
+	    "script"      : "./service",   
+	    "exec_interpreter": "bash",
+	    "cwd"         : "./aixjobserver",
+	    "error_file" :  "/home/dotnet/logs/aix-server/console-error.log",
+	    "out_file"   :  "/home/dotnet//logs/aix-server/console.log",
+	    "max_memory_restart": "1G"	   
+    }
+  ]
+}
