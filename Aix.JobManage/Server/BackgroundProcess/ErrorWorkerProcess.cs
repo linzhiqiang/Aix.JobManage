@@ -33,7 +33,7 @@ namespace Aix.JobManage.Server
                     var lockKey = $"queue:queues:{queue}:lock";
                     await _jobStorage.Lock(lockKey, TimeSpan.FromMinutes(1), async () =>
                     {
-                        await ProcessQueue(context,queue);
+                        await ProcessQueue(context, queue);
                     }, () => Task.CompletedTask);
                 }
             }
@@ -48,12 +48,11 @@ namespace Aix.JobManage.Server
             }
         }
 
-        private async Task ProcessQueue(BackgroundProcessContext context,string queue)
+        private async Task ProcessQueue(BackgroundProcessContext context, string queue)
         {
             int deleteCount = 0;
             var length = 0;
 
-            var step = PerBatchSize * -1;
             var start = PerBatchSize * -1;
             var end = -1;
             do
@@ -62,16 +61,19 @@ namespace Aix.JobManage.Server
                 //var end = (index * PerBatchSize + 1) * -1;
                 var list = await _jobStorage.GetErrorJobId(queue, start, end);
                 length = list.Length;
-                deleteCount = await ProcessFailedJob(context,queue, list);
+                deleteCount = await ProcessFailedJob(context, queue, list);
 
-                start = start + step + deleteCount;
-                end = end + step + deleteCount;
+                //start = start + step + deleteCount;
+                //end = end + step + deleteCount;
+
+                end = 0 - ((length - deleteCount) + 1);
+                start = end - PerBatchSize + 1;
 
             }
             while (length > 0);
         }
 
-        public async Task<int> ProcessFailedJob(BackgroundProcessContext context,string queue, string[] list)
+        public async Task<int> ProcessFailedJob(BackgroundProcessContext context, string queue, string[] list)
         {
             int deleteCount = 0;
             for (var i = list.Length - 1; i >= 0; i--)
