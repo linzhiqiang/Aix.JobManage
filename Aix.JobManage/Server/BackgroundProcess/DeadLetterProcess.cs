@@ -32,7 +32,6 @@ namespace Aix.JobManage.Server
                 var length = 0;
                 var startTime = DateTime.Now;
 
-                var step = PerBatchSize * -1;
                 var start = PerBatchSize * -1;
                 var end = -1;
                 do
@@ -42,8 +41,8 @@ namespace Aix.JobManage.Server
                     length = list.Length;
                     deleteCount = await ProcessList(context,list);
 
-                    start = start + step + deleteCount;
-                    end = end + step + deleteCount;
+                    end = 0 - ((length - deleteCount) + 1);
+                    start = end - PerBatchSize + 1;
 
                     //if (length > 0 && (DateTime.Now - startTime).Seconds >= 30)
                     //{
