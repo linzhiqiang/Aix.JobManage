@@ -57,9 +57,14 @@ namespace Aix.JobManage.Server
             var end = -1;
             do
             {
-                var list = await _jobStorage.GetErrorJobId(queue, start, end);// -100,-1
+                //var start = (index + 1) * PerBatchSize * -1;
+                //var end = (index * PerBatchSize + 1) * -1;
+                var list = await _jobStorage.GetErrorJobId(queue, start, end);
                 length = list.Length;
                 deleteCount = await ProcessFailedJob(context, queue, list);
+
+                //start = start + step + deleteCount;
+                //end = end + step + deleteCount;
 
                 end = 0 - ((length - deleteCount) + 1);
                 start = end - PerBatchSize + 1;

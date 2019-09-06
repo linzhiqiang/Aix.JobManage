@@ -14,7 +14,7 @@ namespace ServerDemo
             //com 虚拟机 192.168.111.130:6379
             //home 192.168.72.129:6379
             var host = "127.0.0.1:6379";
-            host = "192.168.111.131:6379";
+           // host = "192.168.111.131:6379";
             GlobalConfiguration.Configuration.UseRedis(host, new RedisStorageOptions { Prefix = "aixjobdemo:" })
                                //.UseLogProvider(new ConsoleLogProvider(ConsoleLogLevel.Error));
                                .UseLogProvider(new NLogProvider());

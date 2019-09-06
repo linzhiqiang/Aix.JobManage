@@ -15,7 +15,7 @@ namespace ClientDemo
             //192.168.111.130    
             //home 192.168.72.129
             var host = "127.0.0.1:6379";
-            host = "192.168.111.131:6379";
+          //  host = "192.168.111.131:6379";
             GlobalConfiguration.Configuration.UseRedis(host, new RedisStorageOptions { Prefix = "aixjobdemo:" });//192.168.102.108
 
             int index = 0;
@@ -24,7 +24,7 @@ namespace ClientDemo
 
             // BackgroundJobClient.Instance.AddRecurringJob("job2", "定时处理任务2", "定时处理任务2", "*/5 * * * * *");
 
-//            BackgroundJobClient.Instance.AddRecurringJob("job2", "定时处理任务2", new OrderConvertJobModel { OrderId = "1000" }, "*/5 * * * * *");
+           BackgroundJobClient.Instance.AddRecurringJob("job2", "定时处理任务2", new OrderConvertJobModel { OrderId = "1000" }, "*/1 * * * * *");
 
             //BackgroundJobClient.Instance.AddRecurringJob("job2", "定时处理任务2", new OrderConvertJobModel { OrderId = "2000" }, "*/30 * * * * *");
 
@@ -45,60 +45,60 @@ namespace ClientDemo
 
             Task.Run(() =>
             {
-                Parallel.For(0, count, async (i) =>
-                {
-                    var delay = i % 100;
-                    var model = new OrderConvertJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
-                    await BackgroundJobClient.Instance.AddDelayJob(model, TimeSpan.FromSeconds(delay));
-                    Console.WriteLine($"添加延时任务：{i}  " + JsonUtils.ToJson(model));
+                //Parallel.For(0, count, async (i) =>
+                //{
+                //    var delay = i % 100;
+                //    var model = new OrderConvertJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
+                //    await BackgroundJobClient.Instance.AddDelayJob(model, TimeSpan.FromSeconds(delay));
+                //    Console.WriteLine($"添加延时任务：{i}  " + JsonUtils.ToJson(model));
 
-                    // await BackgroundJobClient.Instance.AddJob("转单任务" + i + " " + DateTime.Now, "convertorderqueue");
-                    //await Task.Delay(50);
-                });
-                Console.WriteLine("添加延时任务完成");
+                //    // await BackgroundJobClient.Instance.AddJob("转单任务" + i + " " + DateTime.Now, "convertorderqueue");
+                //    //await Task.Delay(50);
+                //});
+                //Console.WriteLine("添加延时任务完成");
             });
             #endregion
            
             #region 即时任务
             Task.Run(() =>
             {
-                Parallel.For(0, count, async (i) =>
-              {
-                  var model = new OrderConvertJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
-                  await BackgroundJobClient.Instance.AddJob(model);
-                  Console.WriteLine($"添加转单任务：{i}  " + JsonUtils.ToJson(model));
+              //  Parallel.For(0, count, async (i) =>
+              //{
+              //    var model = new OrderConvertJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
+              //    await BackgroundJobClient.Instance.AddJob(model);
+              //    Console.WriteLine($"添加转单任务：{i}  " + JsonUtils.ToJson(model));
 
-                  // await BackgroundJobClient.Instance.AddJob("转单任务" + i + " " + DateTime.Now, "convertorderqueue");
-                  //await Task.Delay(50);
-              });
-                Console.WriteLine("添加转单任务完成");
+              //    // await BackgroundJobClient.Instance.AddJob("转单任务" + i + " " + DateTime.Now, "convertorderqueue");
+              //    //await Task.Delay(50);
+              //});
+              //  Console.WriteLine("添加转单任务完成");
             });
             Task.Run(() =>
             {
-                Parallel.For(0, count, async (i) =>
-                {
-                    var model = new OrderSendJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
-                    await BackgroundJobClient.Instance.AddJob(model);
-                    Console.WriteLine($"添加发货任务：{i}  " + JsonUtils.ToJson(model));
-                    //await BackgroundJobClient.Instance.AddJob("审单任务" + i + " " + DateTime.Now, "auditqueue");
-                    // await Task.Delay(50);
-                });
-                Console.WriteLine("添加发货任务完成");
+                //Parallel.For(0, count, async (i) =>
+                //{
+                //    var model = new OrderSendJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
+                //    await BackgroundJobClient.Instance.AddJob(model);
+                //    Console.WriteLine($"添加发货任务：{i}  " + JsonUtils.ToJson(model));
+                //    //await BackgroundJobClient.Instance.AddJob("审单任务" + i + " " + DateTime.Now, "auditqueue");
+                //    // await Task.Delay(50);
+                //});
+                //Console.WriteLine("添加发货任务完成");
             });
 
 
 
             Task.Run(() =>
             {
-                Parallel.For(0, count, async (i) =>
-                {
-                    var model = new OrderDispatchJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
-                    await BackgroundJobClient.Instance.AddJob(model);
-                    Console.WriteLine($"添加配货任务：{i}  " + JsonUtils.ToJson(model));
-                    //await BackgroundJobClient.Instance.AddJob("审单任务" + i + " " + DateTime.Now, "auditqueue");
-                    // await Task.Delay(50);
-                });
-                Console.WriteLine("添加配货任务完成");
+                //Parallel.For(0, count, async (i) =>
+                //{
+                //    var model = new OrderDispatchJobModel { OrderId = Interlocked.Increment(ref index).ToString() };
+                //    await BackgroundJobClient.Instance.AddJob(model);
+                //    Console.WriteLine($"添加配货任务：{i}  " + JsonUtils.ToJson(model));
+                //    //await BackgroundJobClient.Instance.AddJob("审单任务" + i + " " + DateTime.Now, "auditqueue");
+                //    // await Task.Delay(50);
+                //});
+                //Console.WriteLine("添加配货任务完成");
             });
 
             //Task.Run(() =>

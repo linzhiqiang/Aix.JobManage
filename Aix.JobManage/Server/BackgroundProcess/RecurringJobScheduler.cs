@@ -29,7 +29,7 @@ namespace Aix.JobManage.Server
             List<double> nextExecuteDelays = new List<double>(); //记录每个任务的下次执行时间，取最小的等待
             var lockKey = "recurringjob:lock";
 
-            await _jobStorage.Lock(lockKey, TimeSpan.FromMinutes(1), async () =>
+            await _jobStorage.Lock(lockKey, TimeSpan.FromSeconds(30), async () =>
             {
                 var list = await _jobStorage.GetAllRecurringJobId();
                 foreach (var jobId in list)
@@ -64,8 +64,8 @@ namespace Aix.JobManage.Server
                 }
             },()=>Task.CompletedTask);
 
-            var minValue = nextExecuteDelays.Any() ? (int)nextExecuteDelays.Min() : _options.RecurringJobTimeout.TotalMilliseconds;
-            var delay = Math.Max(minValue, 1000); //应该延时这么久最好
+            var minValue = nextExecuteDelays.Any() ? nextExecuteDelays.Min() : _options.RecurringJobTimeout.TotalMilliseconds;
+            var delay = minValue;// Math.Max(minValue, 1000); 
 
             _jobStorage.WaitForRecurringJob(TimeSpan.FromMilliseconds(delay), context.CancellationToken);
         }

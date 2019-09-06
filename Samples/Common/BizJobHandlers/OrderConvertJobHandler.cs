@@ -15,7 +15,8 @@ namespace Common.BizJobHandlers
     {
         public override Task<object> Execute(OrderConvertJobModel jobData)
         {
-            Console.WriteLine($"转单服务:{jobData.OrderId} "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff zzz"));
+            //Console.WriteLine($"转单服务:{jobData.OrderId} "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff zzz"));
+            Console.WriteLine($"转单服务:{jobData.OrderId} " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             return Task.FromResult(new object());
         }
     }
